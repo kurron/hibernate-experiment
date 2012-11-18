@@ -1,0 +1,15 @@
+<component name="libraryTable">
+  <library name="HIbernate">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/build/output/lib/hibernate-core-3.6.10.Final.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/output/lib/antlr-2.7.6.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/output/lib/commons-collections-3.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/output/lib/dom4j-1.6.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/output/lib/hibernate-commons-annotations-3.2.0.Final.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/output/lib/hibernate-jpa-2.0-api-1.0.1.Final.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/output/lib/jta-1.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

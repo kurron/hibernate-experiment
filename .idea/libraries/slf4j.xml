@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="slf4j">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/build/output/lib/slf4j-ext-1.7.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/output/lib/slf4j-api-1.7.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/output/lib/jcl-over-slf4j-1.7.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/output/lib/jul-to-slf4j-1.7.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/output/lib/log4j-over-slf4j-1.7.2.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

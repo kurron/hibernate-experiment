@@ -1,0 +1,23 @@
+<component name="libraryTable">
+  <library name="Spring">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/build/output/lib/spring-core-3.1.3.RELEASE.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/output/lib/spring-tx-3.1.3.RELEASE.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/output/lib/spring-aop-3.1.3.RELEASE.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/output/lib/spring-aspects-3.1.3.RELEASE.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/output/lib/spring-instrument-3.1.3.RELEASE.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/output/lib/spring-oxm-3.1.3.RELEASE.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/output/lib/spring-expression-3.1.3.RELEASE.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/output/lib/spring-jdbc-3.1.3.RELEASE.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/output/lib/spring-orm-3.1.3.RELEASE.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/output/lib/spring-context-support-3.1.3.RELEASE.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/output/lib/spring-web-3.1.3.RELEASE.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/output/lib/spring-asm-3.1.3.RELEASE.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/output/lib/spring-webmvc-3.1.3.RELEASE.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/output/lib/spring-context-3.1.3.RELEASE.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/output/lib/spring-beans-3.1.3.RELEASE.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

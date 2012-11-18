@@ -1,0 +1,48 @@
+apply plugin: 'groovy'
+
+defaultTasks 'clean', 'collectJars', 'build'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile "org.springframework:spring-aop:${springFrameworkVersion}"
+    compile "org.springframework:spring-asm:${springFrameworkVersion}"
+    compile "org.springframework:spring-aspects:${springFrameworkVersion}"
+    compile "org.springframework:spring-beans:${springFrameworkVersion}"
+    compile "org.springframework:spring-context:${springFrameworkVersion}"
+    compile "org.springframework:spring-context-support:${springFrameworkVersion}"
+    compile "org.springframework:spring-core:${springFrameworkVersion}"
+    compile "org.springframework:spring-expression:${springFrameworkVersion}"
+    compile "org.springframework:spring-instrument:${springFrameworkVersion}"
+    compile "org.springframework:spring-jdbc:${springFrameworkVersion}"
+    compile "org.springframework:spring-orm:${springFrameworkVersion}"
+    compile "org.springframework:spring-oxm:${springFrameworkVersion}"
+    compile "org.springframework:spring-tx:${springFrameworkVersion}"
+    compile "org.springframework:spring-web:${springFrameworkVersion}"
+    compile "org.springframework:spring-webmvc:${springFrameworkVersion}"
+    compile "org.slf4j:slf4j-api:${slf4jVersion}"
+    compile "org.slf4j:slf4j-ext:${slf4jVersion}"
+    compile "org.hibernate:hibernate-core:${hibernateVersion}"
+
+    testCompile "org.springframework:spring-test:${springFrameworkVersion}"
+    testCompile "junit:junit:${junitVersion}"
+
+    runtime "org.slf4j:jcl-over-slf4j:${slf4jVersion}"
+    runtime "org.slf4j:jul-to-slf4j:${slf4jVersion}"
+    runtime "org.slf4j:log4j-over-slf4j:${slf4jVersion}"
+    runtime "ch.qos.logback:logback-classic:${logbackVersion}"
+    runtime "ch.qos.logback:logback-core:${logbackVersion}"
+
+    testRuntime "cglib:cglib-nodep:${cglibVersion}"          // allows mocking of classes (in addition to interfaces)
+}
+
+task generateWrapper(type: Wrapper) {
+    gradleVersion = '1.2'
+}
+
+task collectJars(type: Copy) {
+    into "$buildDir/output/lib"
+    from configurations.testRuntime
+}

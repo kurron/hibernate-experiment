@@ -4,7 +4,9 @@ import org.hibernate.SessionFactory;
 import org.hibernate.classic.Session;
 import org.junit.Test;
 import org.kurron.domain.Child;
+import org.kurron.domain.Master;
 import org.kurron.domain.Parent;
+import org.kurron.domain.Slave;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
@@ -115,6 +117,26 @@ public class LearningTest extends AbstractTransactionalJUnit4SpringContextTests
         currentSession().save( child );
         currentSession().flush();
         printBoundary( "showcase_child_insert" );
+    }
+
+    @Test
+    public void showcase_cascading_insert_of_both_master_and_slave() throws Exception
+    {
+
+        printBoundary( "showcase_cascading_insert_of_both_master_and_slave" );
+        assertThat( sessionFactory, is( notNullValue() ) );
+
+        final Master master = new Master();
+        master.setName( randomHexString() );
+
+        final Slave child = new Slave();
+        child.setName( randomHexString() );
+        child.setMaster( master );
+        master.addSlave( child );
+
+        currentSession().save( master );
+        currentSession().flush();
+        printBoundary( "showcase_cascading_insert_of_both_master_and_slave" );
     }
 
     private Session currentSession()

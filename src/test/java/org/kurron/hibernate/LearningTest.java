@@ -8,10 +8,12 @@ import org.kurron.domain.Master;
 import org.kurron.domain.Parent;
 import org.kurron.domain.Slave;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 
 import java.util.Random;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -119,7 +121,8 @@ public class LearningTest extends AbstractTransactionalJUnit4SpringContextTests
         printBoundary( "showcase_child_insert" );
     }
 
-    @Test
+    @Test()
+    @Rollback( false )
     public void showcase_cascading_insert_of_both_master_and_slave() throws Exception
     {
 
@@ -129,10 +132,12 @@ public class LearningTest extends AbstractTransactionalJUnit4SpringContextTests
         final Master master = new Master();
         master.setName( randomHexString() );
 
-        final Slave child = new Slave();
-        child.setName( randomHexString() );
-        child.setMaster( master );
-        master.addSlave( child );
+        for( int i = 0; i < 10; i++ )
+        {
+            final Slave child = new Slave();
+            child.setName( randomHexString() );
+            master.addSlave( child );
+        }
 
         currentSession().save( master );
         currentSession().flush();

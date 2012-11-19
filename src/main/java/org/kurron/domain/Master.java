@@ -3,11 +3,14 @@ package org.kurron.domain;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
@@ -28,12 +31,13 @@ public class Master
     @Column( name = "name", length = 75, unique = true, nullable = false )
     public String name;
 
-    @OneToMany( mappedBy = "master", cascade = { CascadeType.ALL } )
+    @ElementCollection
+    @CollectionTable( name="slaves", joinColumns=@JoinColumn( name="master_id" ) )
+    @Column( name="slave" )
     private Set<Slave> slaves = new HashSet<>( 8 );
 
     public void addSlave( Slave slave )
     {
-        slave.setMaster( this );
         slaves.add( slave );
     }
 

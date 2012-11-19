@@ -122,7 +122,6 @@ public class LearningTest extends AbstractTransactionalJUnit4SpringContextTests
     }
 
     @Test()
-    @Rollback( false )
     public void showcase_cascading_insert_of_both_master_and_slave() throws Exception
     {
 
@@ -142,6 +141,33 @@ public class LearningTest extends AbstractTransactionalJUnit4SpringContextTests
         currentSession().save( master );
         currentSession().flush();
         printBoundary( "showcase_cascading_insert_of_both_master_and_slave" );
+    }
+
+    @Test()
+    @Rollback( false )
+    public void showcase_deletion_of_master_implies_deletion_of_slaves() throws Exception
+    {
+
+        printBoundary( "showcase_deletion_of_master_implies_deletion_of_slaves" );
+        assertThat( sessionFactory, is( notNullValue() ) );
+
+        final Master master = new Master();
+        master.setName( randomHexString() );
+
+        for( int i = 0; i < 10; i++ )
+        {
+            final Slave child = new Slave();
+            child.setName( randomHexString() );
+            master.addSlave( child );
+        }
+
+        currentSession().save( master );
+        currentSession().flush();
+
+        currentSession().delete( master );
+        currentSession().flush();
+
+        printBoundary( "showcase_deletion_of_master_implies_deletion_of_slaves" );
     }
 
     private Session currentSession()

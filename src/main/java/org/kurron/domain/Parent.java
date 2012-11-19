@@ -1,12 +1,16 @@
 package org.kurron.domain;
 
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
+import org.hibernate.annotations.ForeignKey;
 
 @Entity
 @Table( name = "parent" )
@@ -23,6 +27,10 @@ public class Parent
 
     @Column( name = "name", length = 75, unique = true, nullable = false )
     public String name;
+
+    @OneToMany
+    @ForeignKey( name = "child_id" )
+    private Set<Child> children = new HashSet<>( 8 );
 
     public Long getId()
     {
@@ -52,5 +60,10 @@ public class Parent
     public void setVersion( Integer version )
     {
         this.version = version;
+    }
+
+    public Set<Child> getChildren()
+    {
+        return children;
     }
 }

@@ -53,4 +53,32 @@ public class Child
     {
         version = aVersion;
     }
+
+    @Override
+    public boolean equals( final Object o )
+    {
+        if( this == o )
+        {
+            return true;
+        }
+        if( o == null || getClass() != o.getClass() )
+        {
+            return false;
+        }
+
+        final Child child = (Child) o;
+
+        if( !name.equals( child.name ) )
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return name.hashCode();
+    }
 }

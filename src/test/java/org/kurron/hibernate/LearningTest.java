@@ -3,6 +3,7 @@ package org.kurron.hibernate;
 import org.hibernate.SessionFactory;
 import org.hibernate.classic.Session;
 import org.junit.Test;
+import org.kurron.domain.Child;
 import org.kurron.domain.Parent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -38,6 +39,12 @@ public class LearningTest extends AbstractTransactionalJUnit4SpringContextTests
         assertThat( parent.getId(), is( notNullValue() ) );
         assertThat( parent.getVersion(), is( notNullValue() ) );
 
+        final Child child = new Child();
+        child.setName( randomHexString() );
+        currentSession().saveOrUpdate( child );
+        currentSession().flush();
+        assertThat( child.getId(), is( notNullValue() ) );
+        assertThat( child.getVersion(), is( notNullValue() ) );
     }
 
     private Session currentSession()

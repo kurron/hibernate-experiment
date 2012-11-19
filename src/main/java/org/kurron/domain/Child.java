@@ -21,5 +21,36 @@ public class Child
     @Column( name = "version", nullable = false )
     private Integer version;
 
+    @Column( name = "name", length = 75, unique = true, nullable = false )
+    public String name;
 
+    public Long getId()
+    {
+        return id;
+    }
+
+    public void setId( final Long aId )
+    {
+        id = aId;
+    }
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setName( final String aName )
+    {
+        name = aName;
+    }
+
+    public Integer getVersion()
+    {
+        return version;
+    }
+
+    public void setVersion( final Integer aVersion )
+    {
+        version = aVersion;
+    }
 }

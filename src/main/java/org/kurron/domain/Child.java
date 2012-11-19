@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
@@ -23,6 +25,10 @@ public class Child
 
     @Column( name = "name", length = 75, unique = true, nullable = false )
     public String name;
+
+    @ManyToOne
+    @JoinColumn( name = "parent_id", nullable = false )
+    private Parent parent;
 
     public Long getId()
     {
@@ -52,6 +58,16 @@ public class Child
     public void setVersion( final Integer aVersion )
     {
         version = aVersion;
+    }
+
+    public Parent getParent()
+    {
+        return parent;
+    }
+
+    public void setParent( final Parent aParent )
+    {
+        parent = aParent;
     }
 
     @Override

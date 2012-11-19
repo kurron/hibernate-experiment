@@ -2,6 +2,7 @@ package org.kurron.domain;
 
 import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,9 +11,6 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.ForeignKey;
 
 @Entity
 @Table( name = "parent" )
@@ -30,10 +28,14 @@ public class Parent
     @Column( name = "name", length = 75, unique = true, nullable = false )
     public String name;
 
-    @OneToMany
-    @Cascade( { CascadeType.ALL } )
-    @ForeignKey( name = "child_id" )
+    @OneToMany( mappedBy = "parent", cascade = { CascadeType.ALL } )
     private Set<Child> children = new HashSet<>( 8 );
+
+    public void addChild( Child child )
+    {
+        child.setParent( this );
+        children.add( child );
+    }
 
     public Long getId()
     {

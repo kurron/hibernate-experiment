@@ -44,24 +44,77 @@ public class LearningTest extends AbstractTransactionalJUnit4SpringContextTests
     parent/child relationship. In this case, the life of the child is bound to the life cycle of the parent.
     */
     @Test
-    public void given_when_then() throws Exception
+    public void showcase_cascading_insert_of_both_parent_and_child() throws Exception
     {
-        System.err.println("Test called.");
+
+        printBoundary( "showcase_cascading_insert_of_both_parent_and_child" );
         assertThat( sessionFactory, is( notNullValue() ) );
 
         final Parent parent = new Parent();
         parent.setName( randomHexString() );
-        currentSession().saveOrUpdate( parent );
-        currentSession().flush();
-        assertThat( parent.getId(), is( notNullValue() ) );
-        assertThat( parent.getVersion(), is( notNullValue() ) );
 
         final Child child = new Child();
         child.setName( randomHexString() );
+        child.setParent( parent );
+        parent.addChild( child );
 
-        parent.getChildren().add( child );
-        currentSession().saveOrUpdate( parent );
+        currentSession().save( parent );
         currentSession().flush();
+        printBoundary( "showcase_cascading_insert_of_both_parent_and_child" );
+    }
+
+    private void printBoundary( String text )
+    {
+        System.err.println( "--- " + text + " ----" );
+        System.err.flush();
+    }
+
+    @Test
+    public void showcase_cascading_child_insert_when_parent_is_updated() throws Exception
+    {
+        printBoundary( "showcase_cascading_child_insert_when_parent_is_updated" );
+        assertThat( sessionFactory, is( notNullValue() ) );
+
+        final Parent parent = new Parent();
+        parent.setName( randomHexString() );
+        currentSession().save( parent );
+        currentSession().flush();
+        assertThat( parent.getId(), is( notNullValue() ) );
+        assertThat( parent.getVersion(), is( notNullValue() ) );
+        currentSession().save( parent );
+        currentSession().flush();
+
+        final Child child = new Child();
+        child.setName( randomHexString() );
+        child.setParent( parent );
+        parent.addChild( child );
+        currentSession().save( parent );
+        currentSession().flush();
+        printBoundary( "showcase_cascading_child_insert_when_parent_is_updated" );
+    }
+
+    @Test
+    public void showcase_child_insert() throws Exception
+    {
+        printBoundary( "showcase_child_insert" );
+        assertThat( sessionFactory, is( notNullValue() ) );
+
+        final Parent parent = new Parent();
+        parent.setName( randomHexString() );
+        currentSession().save( parent );
+        currentSession().flush();
+        assertThat( parent.getId(), is( notNullValue() ) );
+        assertThat( parent.getVersion(), is( notNullValue() ) );
+        currentSession().save( parent );
+        currentSession().flush();
+
+        final Child child = new Child();
+        child.setName( randomHexString() );
+        child.setParent( parent );
+        parent.addChild( child );
+        currentSession().save( child );
+        currentSession().flush();
+        printBoundary( "showcase_child_insert" );
     }
 
     private Session currentSession()

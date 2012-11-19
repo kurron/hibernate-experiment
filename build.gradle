@@ -36,6 +36,9 @@ dependencies {
     runtime "ch.qos.logback:logback-core:${logbackVersion}"
     runtime "org.hsqldb:hsqldb:${hsqldbVersion}"
     runtime "org.javassist:javassist:${javassistVersion}"
+    runtime "mysql:mysql-connector-java:${jdbcDriverVersion}"
+    runtime "org.apache.tomcat:tomcat-jdbc:${tomcatVersion}"
+    runtime "org.apache.tomcat:tomcat-juli:${tomcatVersion}"
 
     testRuntime "cglib:cglib-nodep:${cglibVersion}"          // allows mocking of classes (in addition to interfaces)
 }

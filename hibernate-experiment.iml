@@ -16,6 +16,7 @@
     <orderEntry type="library" scope="TEST" name="Spring Test" level="project" />
     <orderEntry type="library" scope="TEST" name="JUnit" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="logback" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="hsqldb" level="project" />
   </component>
 </module>
 

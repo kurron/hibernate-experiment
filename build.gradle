@@ -34,6 +34,7 @@ dependencies {
     runtime "org.slf4j:log4j-over-slf4j:${slf4jVersion}"
     runtime "ch.qos.logback:logback-classic:${logbackVersion}"
     runtime "ch.qos.logback:logback-core:${logbackVersion}"
+    runtime "org.hsqldb:hsqldb:${hsqldbVersion}"
 
     testRuntime "cglib:cglib-nodep:${cglibVersion}"          // allows mocking of classes (in addition to interfaces)
 }

@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.ForeignKey;
 
 @Entity
@@ -29,6 +31,7 @@ public class Parent
     public String name;
 
     @OneToMany
+    @Cascade( { CascadeType.ALL } )
     @ForeignKey( name = "child_id" )
     private Set<Child> children = new HashSet<>( 8 );
 

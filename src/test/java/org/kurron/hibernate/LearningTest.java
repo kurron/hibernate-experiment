@@ -58,10 +58,6 @@ public class LearningTest extends AbstractTransactionalJUnit4SpringContextTests
 
         final Child child = new Child();
         child.setName( randomHexString() );
-        currentSession().saveOrUpdate( child );
-        currentSession().flush();
-        assertThat( child.getId(), is( notNullValue() ) );
-        assertThat( child.getVersion(), is( notNullValue() ) );
 
         parent.getChildren().add( child );
         currentSession().saveOrUpdate( parent );

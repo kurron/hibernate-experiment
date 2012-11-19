@@ -35,6 +35,7 @@ dependencies {
     runtime "ch.qos.logback:logback-classic:${logbackVersion}"
     runtime "ch.qos.logback:logback-core:${logbackVersion}"
     runtime "org.hsqldb:hsqldb:${hsqldbVersion}"
+    runtime "org.javassist:javassist:${javassistVersion}"
 
     testRuntime "cglib:cglib-nodep:${cglibVersion}"          // allows mocking of classes (in addition to interfaces)
 }

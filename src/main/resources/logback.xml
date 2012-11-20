@@ -14,7 +14,7 @@
 
     <logger name="org.kurron" level="ALL"/>
 
-    <logger name="org.hibernate"/>
+    <logger name="org.hibernate" level="DEBUG"/>
 
     <logger name="org.springframework"/>
 

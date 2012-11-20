@@ -1,6 +1,8 @@
 package org.kurron.domain;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -36,7 +38,21 @@ public class Parent
     public void addChild( Child child )
     {
         child.setParent( this );
+        if ( children.contains( child ) )
+        {
+            copyDatabaseIdentifiers( child );
+            // use child as the prototype of the instance to remove -- will use hashcode/equals to pull it out
+            children.remove( child );
+        }
         children.add( child );
+    }
+
+    private void copyDatabaseIdentifiers( final Child child )
+    {
+        final List<Child> list = new ArrayList<>( children );
+        final Child attached = list.get( list.indexOf( child ) );
+        child.setId( attached.getId() );
+        child.setVersion( attached.getVersion() );
     }
 
     public void removeChild( Child child )

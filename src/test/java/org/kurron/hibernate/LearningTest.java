@@ -59,6 +59,7 @@ public class LearningTest extends AbstractTransactionalJUnit4SpringContextTests
 
         final Child child = new Child();
         child.setName( randomHexString() );
+        child.setNoise( randomHexString() );
         parent.addChild( child );
 
         currentSession().save( parent );
@@ -79,6 +80,7 @@ public class LearningTest extends AbstractTransactionalJUnit4SpringContextTests
         {
             final Child child = new Child();
             child.setName( randomHexString() );
+            child.setNoise( randomHexString() );
             parent.addChild( child );
         }
 
@@ -92,9 +94,33 @@ public class LearningTest extends AbstractTransactionalJUnit4SpringContextTests
         printBoundary( "showcase_cascading_orphaned_child_deletion" );
     }
 
+    /*
+     * The merge(item) call D results in several actions. First, Hibernate checks
+     * whether a persistent instance in the persistence context has the same database
+     * identifier as the detached instance you’re merging. In this case, this is true: item
+     * and item2, which were loaded with get() C, have the same primary key value.
+     * If there is an equal persistent instance in the persistence context, Hibernate
+     * copies the state of the detached instance onto the persistent instance E. In other
+     * words, the new description that has been set on the detached item is also set on
+     * the persistent item2.
+     * If there is no equal persistent instance in the persistence context, Hibernate
+     * loads it from the database (effectively executing the same retrieval by identifier as
+     * you did with get()) and then merges the detached state with the retrieved
+     * object’s state.
+     *
+     * On any entity that is contained in a collection, supply a equals/hashcode combinations
+     * written in terms of a business key -- a property or combination of properties that a human
+     * might use to identify the instance.  It doesn't have to be immutable but it shouldn't change
+     * very often. Do not include the entities database identifiers or collections in the business key.
+     *
+     * A set does not allow duplicates, using the hashcode as the key into the set, so you have to remove
+     * any instance in the collection that has the same business key as the detached set.  If the detached
+     * instance hashes out to one that is already in the collection, the detached one won't get inserted
+     * into the set and your changes won't take.
+     */
     @Test
     @Rollback( false )
-    public void showcase_merging_of_detached_child_via_merge_on_parent() throws Exception
+    public void showcase_merging_of_detached_child_with_copied_ids() throws Exception
     {
         printBoundary( "showcase_merging_of_detached_child_via_merge_on_parent" );
         assertThat( sessionFactory, is( notNullValue() ) );
@@ -102,10 +128,11 @@ public class LearningTest extends AbstractTransactionalJUnit4SpringContextTests
         final Parent parent = new Parent();
         parent.setName( randomHexString() );
 
-        for( int i = 0; i < 10; i++ )
+        for( int i = 0; i < 5; i++ )
         {
             final Child child = new Child();
             child.setName( randomHexString() );
+            child.setNoise( randomHexString() );
             parent.addChild( child );
         }
 
@@ -114,9 +141,8 @@ public class LearningTest extends AbstractTransactionalJUnit4SpringContextTests
 
         final Child detached = new Child();
         final Child attached = parent.randomlySelectChild();
-        detached.setId( attached.getId() );
-        detached.setVersion( attached.getVersion() );
-        detached.setName( "detached" );
+        detached.setName( attached.getName() );
+        detached.setNoise( "detached" );
         parent.addChild( detached );
         currentSession().merge( parent );
         currentSession().flush();
@@ -138,7 +164,7 @@ public class LearningTest extends AbstractTransactionalJUnit4SpringContextTests
 
         final Child child = new Child();
         child.setName( randomHexString() );
-        child.setParent( parent );
+        child.setNoise( randomHexString() );
         parent.addChild( child );
 
         currentSession().save( child );
@@ -167,6 +193,7 @@ public class LearningTest extends AbstractTransactionalJUnit4SpringContextTests
 
         final Child child = new Child();
         child.setName( randomHexString() );
+        child.setNoise( randomHexString() );
         parent.addChild( child );
         currentSession().save( parent );
         currentSession().flush();
@@ -188,6 +215,7 @@ public class LearningTest extends AbstractTransactionalJUnit4SpringContextTests
 
         final Child child = new Child();
         child.setName( randomHexString() );
+        child.setNoise( randomHexString() );
         parent.addChild( child );
         currentSession().save( child );
         currentSession().flush();

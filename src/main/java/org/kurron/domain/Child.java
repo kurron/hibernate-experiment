@@ -28,6 +28,9 @@ public class Child
     @NaturalId( mutable = true )
     public String name;
 
+    @Column( name = "noise", length = 75, unique = false, nullable = false )
+    public String noise;
+
     @ManyToOne
     @JoinColumn( name = "parent_id", nullable = false )
     private Parent parent;
@@ -72,6 +75,16 @@ public class Child
         parent = aParent;
     }
 
+    public String getNoise()
+    {
+        return noise;
+    }
+
+    public void setNoise( final String aNoise )
+    {
+        noise = aNoise;
+    }
+
     @Override
     public boolean equals( final Object o )
     {
@@ -86,7 +99,7 @@ public class Child
 
         final Child child = (Child) o;
 
-        if( !name.equals( child.name ) )
+        if( !getName().equals( child.getName() ) )
         {
             return false;
         }
@@ -97,12 +110,12 @@ public class Child
     @Override
     public int hashCode()
     {
-        return name.hashCode();
+        return getName().hashCode();
     }
 
     @Override
     public String toString()
     {
-        return name;
+        return name + ":" + noise;
     }
 }

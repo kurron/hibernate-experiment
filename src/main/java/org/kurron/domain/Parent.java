@@ -28,13 +28,19 @@ public class Parent
     @Column( name = "name", length = 75, unique = true, nullable = false )
     public String name;
 
-    @OneToMany( mappedBy = "parent", cascade = { CascadeType.ALL } )
+    @OneToMany( mappedBy = "parent", orphanRemoval = true, cascade = { CascadeType.ALL } )
     private Set<Child> children = new HashSet<>( 8 );
 
     public void addChild( Child child )
     {
         child.setParent( this );
         children.add( child );
+    }
+
+    public void removeChild( Child child )
+    {
+        child.setParent( null );
+        children.remove( child );
     }
 
     public Long getId()

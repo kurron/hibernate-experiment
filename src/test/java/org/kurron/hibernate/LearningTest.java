@@ -2,6 +2,7 @@ package org.kurron.hibernate;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.classic.Session;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.kurron.domain.Child;
 import org.kurron.domain.Master;
@@ -48,10 +49,10 @@ public class LearningTest extends AbstractTransactionalJUnit4SpringContextTests
     parent/child relationship. In this case, the life of the child is bound to the life cycle of the parent.
     */
     @Test
-    public void showcase_cascading_insert_of_both_parent_and_child() throws Exception
+    @Ignore
+    public void showcase_cascading_insert_of_both_parent_and_child_via_parent() throws Exception
     {
-
-        printBoundary( "showcase_cascading_insert_of_both_parent_and_child" );
+        printBoundary( "showcase_cascading_insert_of_both_parent_and_child_via_parent" );
         assertThat( sessionFactory, is( notNullValue() ) );
 
         final Parent parent = new Parent();
@@ -64,7 +65,58 @@ public class LearningTest extends AbstractTransactionalJUnit4SpringContextTests
 
         currentSession().save( parent );
         currentSession().flush();
-        printBoundary( "showcase_cascading_insert_of_both_parent_and_child" );
+        printBoundary( "showcase_cascading_insert_of_both_parent_and_child_via_parent" );
+    }
+
+    @Test
+    @Rollback( false )
+    public void showcase_cascading_orphaned_child_deletion() throws Exception
+    {
+        printBoundary( "showcase_cascading_orphaned_child_deletion" );
+        assertThat( sessionFactory, is( notNullValue() ) );
+
+        final Parent parent = new Parent();
+        parent.setName( randomHexString() );
+
+        for( int i = 0; i < 10; i++ )
+        {
+            final Child child = new Child();
+            child.setName( randomHexString() );
+            child.setParent( parent );
+            parent.addChild( child );
+        }
+
+        currentSession().save( parent );
+        currentSession().flush();
+
+        parent.removeChild( parent.getChildren().toArray( new Child[parent.getChildren().size()] )[0] );
+        currentSession().save( parent );
+        currentSession().flush();
+
+        printBoundary( "showcase_cascading_orphaned_child_deletion" );
+    }
+
+    @Test
+    @Ignore
+    public void showcase_cascading_insert_of_child_via_child() throws Exception
+    {
+
+        printBoundary( "showcase_cascading_insert_of_both_parent_and_child_via_child" );
+        assertThat( sessionFactory, is( notNullValue() ) );
+
+        final Parent parent = new Parent();
+        parent.setName( randomHexString() );
+        currentSession().save( parent );
+        currentSession().flush();
+
+        final Child child = new Child();
+        child.setName( randomHexString() );
+        child.setParent( parent );
+        parent.addChild( child );
+
+        currentSession().save( child );
+        currentSession().flush();
+        printBoundary( "showcase_cascading_insert_of_both_parent_and_child_via_child" );
     }
 
     private void printBoundary( String text )
@@ -74,6 +126,7 @@ public class LearningTest extends AbstractTransactionalJUnit4SpringContextTests
     }
 
     @Test
+    @Ignore
     public void showcase_cascading_child_insert_when_parent_is_updated() throws Exception
     {
         printBoundary( "showcase_cascading_child_insert_when_parent_is_updated" );
@@ -98,6 +151,7 @@ public class LearningTest extends AbstractTransactionalJUnit4SpringContextTests
     }
 
     @Test
+    @Ignore
     public void showcase_child_insert() throws Exception
     {
         printBoundary( "showcase_child_insert" );
@@ -122,6 +176,7 @@ public class LearningTest extends AbstractTransactionalJUnit4SpringContextTests
     }
 
     @Test()
+    @Ignore
     public void showcase_cascading_insert_of_both_master_and_slave() throws Exception
     {
 
@@ -144,7 +199,7 @@ public class LearningTest extends AbstractTransactionalJUnit4SpringContextTests
     }
 
     @Test()
-    @Rollback( false )
+    @Ignore
     public void showcase_deletion_of_master_implies_deletion_of_slaves() throws Exception
     {
 

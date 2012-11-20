@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
+import org.hibernate.annotations.NaturalId;
 
 @Entity
 @Table( name = "parent" )
@@ -26,6 +27,7 @@ public class Parent
     private Integer version;
 
     @Column( name = "name", length = 75, unique = true, nullable = false )
+    @NaturalId( mutable = true )
     public String name;
 
     @OneToMany( mappedBy = "parent", orphanRemoval = true, cascade = { CascadeType.ALL } )
@@ -77,5 +79,11 @@ public class Parent
     {
         return children.toArray( new Child[children.size()] )[0];
 
+    }
+
+    @Override
+    public String toString()
+    {
+        return name;
     }
 }

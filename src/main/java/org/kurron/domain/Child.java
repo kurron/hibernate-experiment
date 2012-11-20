@@ -9,6 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
+import org.hibernate.annotations.NaturalId;
 
 @Entity
 @Table( name = "child" )
@@ -24,6 +25,7 @@ public class Child
     private Integer version;
 
     @Column( name = "name", length = 75, unique = true, nullable = false )
+    @NaturalId( mutable = true )
     public String name;
 
     @ManyToOne
@@ -96,5 +98,11 @@ public class Child
     public int hashCode()
     {
         return name.hashCode();
+    }
+
+    @Override
+    public String toString()
+    {
+        return name;
     }
 }

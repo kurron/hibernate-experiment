@@ -49,7 +49,6 @@ public class LearningTest extends AbstractTransactionalJUnit4SpringContextTests
     parent/child relationship. In this case, the life of the child is bound to the life cycle of the parent.
     */
     @Test
-    @Ignore
     public void showcase_cascading_insert_of_both_parent_and_child_via_parent() throws Exception
     {
         printBoundary( "showcase_cascading_insert_of_both_parent_and_child_via_parent" );
@@ -69,7 +68,6 @@ public class LearningTest extends AbstractTransactionalJUnit4SpringContextTests
     }
 
     @Test
-    @Rollback( false )
     public void showcase_cascading_orphaned_child_deletion() throws Exception
     {
         printBoundary( "showcase_cascading_orphaned_child_deletion" );
@@ -89,7 +87,7 @@ public class LearningTest extends AbstractTransactionalJUnit4SpringContextTests
         currentSession().save( parent );
         currentSession().flush();
 
-        parent.removeChild( parent.getChildren().toArray( new Child[parent.getChildren().size()] )[0] );
+        parent.removeChild( parent.randomlySelectChild() );
         currentSession().save( parent );
         currentSession().flush();
 
@@ -97,7 +95,38 @@ public class LearningTest extends AbstractTransactionalJUnit4SpringContextTests
     }
 
     @Test
-    @Ignore
+    public void showcase_merging_of_detached_child_via_merge_on_parent() throws Exception
+    {
+        printBoundary( "showcase_merging_of_detached_child_via_merge_on_parent" );
+        assertThat( sessionFactory, is( notNullValue() ) );
+
+        final Parent parent = new Parent();
+        parent.setName( randomHexString() );
+
+        for( int i = 0; i < 10; i++ )
+        {
+            final Child child = new Child();
+            child.setName( randomHexString() );
+            child.setParent( parent );
+            parent.addChild( child );
+        }
+
+        currentSession().save( parent );
+        currentSession().flush();
+
+        final Child detached = new Child();
+        final Child attached = parent.randomlySelectChild();
+        detached.setId( attached.getId() );
+        detached.setVersion( attached.getVersion() );
+        detached.setName( "detached" );
+        parent.addChild( detached );
+        currentSession().merge( parent );
+        currentSession().flush();
+
+        printBoundary( "showcase_merging_of_detached_child_via_merge_on_parent" );
+    }
+
+    @Test
     public void showcase_cascading_insert_of_child_via_child() throws Exception
     {
 
@@ -121,12 +150,11 @@ public class LearningTest extends AbstractTransactionalJUnit4SpringContextTests
 
     private void printBoundary( String text )
     {
-        System.err.println( "--- " + text + " ----" );
-        System.err.flush();
+        System.out.println( "--- " + text + " ----" );
+        System.out.flush();
     }
 
     @Test
-    @Ignore
     public void showcase_cascading_child_insert_when_parent_is_updated() throws Exception
     {
         printBoundary( "showcase_cascading_child_insert_when_parent_is_updated" );
@@ -151,7 +179,6 @@ public class LearningTest extends AbstractTransactionalJUnit4SpringContextTests
     }
 
     @Test
-    @Ignore
     public void showcase_child_insert() throws Exception
     {
         printBoundary( "showcase_child_insert" );
@@ -175,8 +202,7 @@ public class LearningTest extends AbstractTransactionalJUnit4SpringContextTests
         printBoundary( "showcase_child_insert" );
     }
 
-    @Test()
-    @Ignore
+    @Test
     public void showcase_cascading_insert_of_both_master_and_slave() throws Exception
     {
 
@@ -198,8 +224,7 @@ public class LearningTest extends AbstractTransactionalJUnit4SpringContextTests
         printBoundary( "showcase_cascading_insert_of_both_master_and_slave" );
     }
 
-    @Test()
-    @Ignore
+    @Test
     public void showcase_deletion_of_master_implies_deletion_of_slaves() throws Exception
     {
 

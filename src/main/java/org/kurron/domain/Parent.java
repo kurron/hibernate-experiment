@@ -73,8 +73,9 @@ public class Parent
         this.version = version;
     }
 
-    public Set<Child> getChildren()
+    public Child randomlySelectChild()
     {
-        return children;
+        return children.toArray( new Child[children.size()] )[0];
+
     }
 }

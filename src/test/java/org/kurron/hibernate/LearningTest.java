@@ -8,6 +8,8 @@ import org.kurron.domain.Child;
 import org.kurron.domain.Master;
 import org.kurron.domain.Parent;
 import org.kurron.domain.Slave;
+import org.kurron.domain.Student;
+import org.kurron.domain.Tutor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
@@ -119,7 +121,6 @@ public class LearningTest extends AbstractTransactionalJUnit4SpringContextTests
      * into the set and your changes won't take.
      */
     @Test
-    @Rollback( false )
     public void showcase_merging_of_detached_child_with_copied_ids() throws Exception
     {
         printBoundary( "showcase_merging_of_detached_child_via_merge_on_parent" );
@@ -221,6 +222,50 @@ public class LearningTest extends AbstractTransactionalJUnit4SpringContextTests
         currentSession().flush();
         printBoundary( "showcase_child_insert" );
     }
+
+    @Test
+    public void showcase_cascading_insert_of_both_tutor_and_student_via_tutor() throws Exception
+    {
+        printBoundary( "showcase_cascading_insert_of_both_tutor_and_student_via_tutor" );
+        assertThat( sessionFactory, is( notNullValue() ) );
+
+        final Tutor tutor = new Tutor();
+        tutor.setName( randomHexString() );
+
+        final Student student = new Student();
+        student.setName( randomHexString() );
+        student.setNoise( randomHexString() );
+
+        tutor.setStudent( student );
+
+        currentSession().save( tutor );
+        currentSession().flush();
+        printBoundary( "showcase_cascading_insert_of_both_tutor_and_student_via_tutor" );
+    }
+
+    @Test
+    @Rollback( false )
+    public void showcase_cascading_delete_of_both_tutor_and_student_via_tutor() throws Exception
+    {
+        printBoundary( "showcase_cascading_delete_of_both_tutor_and_student_via_tutor" );
+        assertThat( sessionFactory, is( notNullValue() ) );
+
+        final Tutor tutor = new Tutor();
+        tutor.setName( randomHexString() );
+
+        final Student student = new Student();
+        student.setName( randomHexString() );
+        student.setNoise( randomHexString() );
+        tutor.setStudent( student );
+
+        currentSession().save( tutor );
+        currentSession().flush();
+
+        currentSession().delete( tutor );
+        currentSession().flush();
+        printBoundary( "showcase_cascading_delete_of_both_tutor_and_student_via_tutor" );
+    }
+
 
     private Session currentSession()
     {

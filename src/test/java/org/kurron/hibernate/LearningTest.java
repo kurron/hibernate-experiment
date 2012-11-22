@@ -1,26 +1,23 @@
 package org.kurron.hibernate;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNull.notNullValue;
+import java.util.Random;
 import org.hibernate.SessionFactory;
 import org.hibernate.classic.Session;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.kurron.domain.Child;
-import org.kurron.domain.Master;
+import org.kurron.domain.Father;
+import org.kurron.domain.Infant;
+import org.kurron.domain.Mother;
 import org.kurron.domain.Parent;
-import org.kurron.domain.Slave;
 import org.kurron.domain.Student;
 import org.kurron.domain.Tutor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
-
-import java.util.Random;
-import org.springframework.transaction.annotation.Transactional;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsNull.notNullValue;
 
 /**
  * Learning test for Hibernate associations.
@@ -244,7 +241,6 @@ public class LearningTest extends AbstractTransactionalJUnit4SpringContextTests
     }
 
     @Test
-    @Rollback( false )
     public void showcase_cascading_delete_of_both_tutor_and_student_via_tutor() throws Exception
     {
         printBoundary( "showcase_cascading_delete_of_both_tutor_and_student_via_tutor" );
@@ -266,6 +262,63 @@ public class LearningTest extends AbstractTransactionalJUnit4SpringContextTests
         printBoundary( "showcase_cascading_delete_of_both_tutor_and_student_via_tutor" );
     }
 
+
+    @Test
+    public void showcase_cascading_insert_of_mother_infant_via_mother() throws Exception
+    {
+        printBoundary( "showcase_cascading_insert_of_mother_father_infant_via_infant" );
+        assertThat( sessionFactory, is( notNullValue() ) );
+
+        final Infant infant = new Infant();
+        infant.setName( randomHexString() );
+        infant.setNoise( randomHexString() );
+
+        final Mother mother = new Mother();
+        mother.setName( randomHexString() );
+        mother.addInfant( infant );
+        currentSession().save( mother );
+
+        final Father father = new Father();
+        father.setName( randomHexString() );
+        father.addInfant( infant );
+        currentSession().save( father );
+
+        currentSession().flush();
+        printBoundary( "showcase_cascading_insert_of_mother_father_infant_via_infant" );
+    }
+
+    @Test
+    @Rollback( false )
+    public void showcase_removal_of_infant_from_father_does_not_cascade_delete_to_infant() throws Exception
+    {
+        printBoundary( "showcase_removal_of_infant_from_father_does_not_cascade_delete_to_infant" );
+        assertThat( sessionFactory, is( notNullValue() ) );
+
+        final Infant infant = new Infant();
+        infant.setName( randomHexString() );
+        infant.setNoise( randomHexString() );
+
+        final Mother mother = new Mother();
+        mother.setName( randomHexString() );
+        mother.addInfant( infant );
+        currentSession().save( mother );
+        currentSession().flush();
+
+        final Father father = new Father();
+        father.setName( randomHexString() );
+        father.addInfant( infant );
+        currentSession().save( father );
+        currentSession().flush();
+
+        father.removeChild( infant );
+        currentSession().saveOrUpdate( father );
+        currentSession().flush();
+        mother.removeChild( infant );
+        currentSession().saveOrUpdate( father );
+        currentSession().flush();
+
+        printBoundary( "showcase_removal_of_infant_from_father_does_not_cascade_delete_to_infant" );
+    }
 
     private Session currentSession()
     {

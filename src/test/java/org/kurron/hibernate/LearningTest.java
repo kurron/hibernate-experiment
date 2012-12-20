@@ -15,6 +15,7 @@ import org.kurron.domain.Parent;
 import org.kurron.domain.Student;
 import org.kurron.domain.Tutor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
@@ -29,6 +30,16 @@ public class LearningTest extends AbstractTransactionalJUnit4SpringContextTests
     private SessionFactory sessionFactory;
 
     private final Random random = new Random();
+
+    @Value("${ron}")
+    private String ronbo;
+
+    @Test
+    public void showcase_property_manipulation() throws Exception
+    {
+        System.err.println( "ronbo = " + ronbo  );
+
+    }
 
     /*
     Hibernate collections are considered to be a logical part of their owning entity and not of the contained

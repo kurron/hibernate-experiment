@@ -34,11 +34,14 @@ public class LearningTest extends AbstractTransactionalJUnit4SpringContextTests
     @Value("${ron}")
     private String ronbo;
 
+    @Value("${tara}")
+    private String tara;
+
     @Test
     public void showcase_property_manipulation() throws Exception
     {
         System.err.println( "ronbo = " + ronbo  );
-
+        System.err.println( "tara = " + tara  );
     }
 
     /*
